@@ -11,15 +11,15 @@ import ConduitArticlesFeed from "./ConduitArticlesFeed";
 const Home = (props) => {
   const [tags, setTags] = useState();
   const [articles, setArticles] = useState();
-  const [feeds, setFeeds] = useState([
-    { id: "personal", name: "Your feed" },
-    { id: "all", name: "Global Feed" },
-  ]);
+  const [feeds, setFeeds] = useState();
   const [selectedFeed, setSelectedFeed] = useState("all");
 
   useEffect(() => {
     HomePageService.fetchTags().then((tags) => setTags(tags));
-
+    setFeeds([
+      { id: "personal", name: "Your feed" },
+      { id: "all", name: "Global Feed" },
+    ]);
     HomePageService.fetchArticles({
       limit: 10,
       offset: 0,
@@ -40,43 +40,54 @@ const Home = (props) => {
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
-            <ConduitArticlesFeed
-              feeds={feeds}
-              selected={selectedFeed}
-              onSelected={onFeedSelected({
-                setArticles,
-                setSelectedFeed,
-                HomePageService,
-                feeds,
-              })}
-            ></ConduitArticlesFeed>
+            {feeds ? (
+              <ConduitArticlesFeed
+                feeds={feeds}
+                selected={selectedFeed}
+                onSelected={onFeedSelected({
+                  setArticles,
+                  setSelectedFeed,
+                  HomePageService,
+                  feeds,
+                })}
+              ></ConduitArticlesFeed>
+            ) : (
+              <div>Loading... </div>
+            )}
+
             <ConduitArticlesList>
-              {articles
-                ? articles.map((article) => (
-                    <ConduitArticlesListItem key={article.slug}>
-                      <ConduitArticlesPreview article={article}>
-                        <ConduitArticlesMeta article={article}>
-                          <ConduitButtonsFavorite
-                            article={article}
-                            onFavoritedArticle={onFavoritedArticle()}
-                          ></ConduitButtonsFavorite>
-                        </ConduitArticlesMeta>
-                      </ConduitArticlesPreview>
-                    </ConduitArticlesListItem>
-                  ))
-                : ""}
+              {articles ? (
+                articles.map((article) => (
+                  <ConduitArticlesListItem key={article.slug}>
+                    <ConduitArticlesPreview article={article}>
+                      <ConduitArticlesMeta article={article}>
+                        <ConduitButtonsFavorite
+                          article={article}
+                          onFavoritedArticle={onFavoritedArticle()}
+                        ></ConduitButtonsFavorite>
+                      </ConduitArticlesMeta>
+                    </ConduitArticlesPreview>
+                  </ConduitArticlesListItem>
+                ))
+              ) : (
+                <div>Loading...</div>
+              )}
             </ConduitArticlesList>
           </div>
           <div className="col-md-3">
-            <ConduitTagsPopular
-              tags={tags}
-              onSelected={onTagSelected({
-                setArticles,
-                setSelectedFeed,
-                HomePageService,
-                feeds,
-              })}
-            />
+            {tags ? (
+              <ConduitTagsPopular
+                tags={tags}
+                onSelected={onTagSelected({
+                  setArticles,
+                  setSelectedFeed,
+                  HomePageService,
+                  feeds,
+                })}
+              />
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
         </div>
       </div>

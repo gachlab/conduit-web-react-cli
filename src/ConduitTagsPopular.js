@@ -4,8 +4,6 @@ const ConduitTagsPopular = ({ tags, onSelected }) => (
   <div className="sidebar">
     <p>Popular Tags</p>
 
-    {!tags && <div>Loading tags...</div>}
-
     {tags && tags.length === 0 && <div>No tags are here... yet.</div>}
 
     {tags && tags.length > 0 && (
