@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConduitFooter = (props) => (
+const ConduitLayoutFooter = (props) => (
   <footer>
     <div className="container">
       <a className="logo-font" href="/">
@@ -15,4 +15,4 @@ const ConduitFooter = (props) => (
   </footer>
 );
 
-export default ConduitFooter;
+export default ConduitLayoutFooter;

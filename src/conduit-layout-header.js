@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConduitHeader = (props) => (
+const ConduitLayoutHeader = (props) => (
   <div>
     <nav className="navbar navbar-light">
       <div className="container">
@@ -32,4 +32,4 @@ const ConduitHeader = (props) => (
   </div>
 );
 
-export default ConduitHeader;
+export default ConduitLayoutHeader;

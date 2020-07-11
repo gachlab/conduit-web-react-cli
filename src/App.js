@@ -1,19 +1,20 @@
 import React from "react";
-import { default as ConduitHeader } from "./ConduitHeader";
-import { default as ConduitFooter } from "./ConduitFooter";
-import { default as Home } from "./Home";
-
 import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import ConduitLayoutHeader from "./conduit-layout-header";
+import ConduitLayoutFooter from "./conduit-layout-footer";
+import ConduitHomePage from "./conduit-home-page";
+
 function App() {
   return (
     <div>
-      <ConduitHeader />
+      <ConduitLayoutHeader />
       <Router>
         <Route path="/">
-          <Home />
+          <ConduitHomePage />
         </Route>
       </Router>
-      <ConduitFooter />
+      <ConduitLayoutFooter />
     </div>
   );
 }

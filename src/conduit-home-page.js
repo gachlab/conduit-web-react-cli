@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ConduitTagsPopular from "./ConduitTagsPopular";
-import HomePageService from "./home-page-service";
-import ConduitArticlesList from "./ConduitArticlesList";
-import ConduitArticlesListItem from "./ConduitArticlesListitem";
-import ConduitArticlesPreview from "./ConduitArticlesPreview";
-import ConduitArticlesMeta from "./ConduitArticlesMeta";
-import ConduitButtonsFavorite from "./ConduitButtonsFavorite";
-import ConduitArticlesFeed from "./ConduitArticlesFeed";
+import ConduitTagsPopular from "./conduit-tags-popular";
+import ConduitHomePageService from "./conduit-home-page-service";
+import ConduitArticlesList from "./conduit-articles-list";
+import ConduitArticlesListItem from "./conduit-articles-list-item";
+import ConduitArticlesPreview from "./conduit-articles-preview";
+import ConduitArticlesMeta from "./conduit-articles-meta";
+import ConduitButtonsFavorite from "./conduit-buttons-favorite";
+import ConduitArticlesFeed from "./conduit-articles-feed";
 
 const Home = (props) => {
   const [tags, setTags] = useState();
@@ -15,12 +15,12 @@ const Home = (props) => {
   const [selectedFeed, setSelectedFeed] = useState("all");
 
   useEffect(() => {
-    HomePageService.fetchTags().then((tags) => setTags(tags));
+    ConduitHomePageService.fetchTags().then((tags) => setTags(tags));
     setFeeds([
       { id: "personal", name: "Your feed" },
       { id: "all", name: "Global Feed" },
     ]);
-    HomePageService.fetchArticles({
+    ConduitHomePageService.fetchArticles({
       limit: 10,
       offset: 0,
       feed: { id: "all", name: "Global Feed" },
@@ -47,7 +47,7 @@ const Home = (props) => {
                 onSelected={onFeedSelected({
                   setArticles,
                   setSelectedFeed,
-                  HomePageService,
+                  HomePageService: ConduitHomePageService,
                   feeds,
                 })}
               ></ConduitArticlesFeed>
@@ -81,7 +81,7 @@ const Home = (props) => {
                 onSelected={onTagSelected({
                   setArticles,
                   setSelectedFeed,
-                  HomePageService,
+                  HomePageService: ConduitHomePageService,
                   feeds,
                 })}
               />
