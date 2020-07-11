@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import service from "./conduit-pages-home-service";
 import ConduitTagsPopular from "./conduit-tags-popular";
-import ConduitHomePageService from "./conduit-home-page-service";
 import ConduitArticlesList from "./conduit-articles-list";
 import ConduitArticlesListItem from "./conduit-articles-list-item";
 import ConduitArticlesPreview from "./conduit-articles-preview";
@@ -15,16 +15,18 @@ const Home = (props) => {
   const [selectedFeed, setSelectedFeed] = useState("all");
 
   useEffect(() => {
-    ConduitHomePageService.fetchTags().then((tags) => setTags(tags));
+    service.fetchTags().then((tags) => setTags(tags));
     setFeeds([
       { id: "personal", name: "Your feed" },
       { id: "all", name: "Global Feed" },
     ]);
-    ConduitHomePageService.fetchArticles({
-      limit: 10,
-      offset: 0,
-      feed: { id: "all", name: "Global Feed" },
-    }).then((articles) => setArticles(articles));
+    service
+      .fetchArticles({
+        limit: 10,
+        offset: 0,
+        feed: { id: "all", name: "Global Feed" },
+      })
+      .then((articles) => setArticles(articles));
   }, []);
 
   return (
@@ -47,7 +49,7 @@ const Home = (props) => {
                 onSelected={onFeedSelected({
                   setArticles,
                   setSelectedFeed,
-                  HomePageService: ConduitHomePageService,
+                  HomePageService: service,
                   feeds,
                 })}
               ></ConduitArticlesFeed>
@@ -81,7 +83,7 @@ const Home = (props) => {
                 onSelected={onTagSelected({
                   setArticles,
                   setSelectedFeed,
-                  HomePageService: ConduitHomePageService,
+                  HomePageService: service,
                   feeds,
                 })}
               />

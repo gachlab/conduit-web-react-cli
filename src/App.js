@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import ConduitLayoutHeader from "./conduit-layout-header";
 import ConduitLayoutFooter from "./conduit-layout-footer";
-import ConduitHomePage from "./conduit-home-page";
+import ConduitPagesHome from "./conduit-pages-home";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <ConduitLayoutHeader />
       <Router>
         <Route path="/">
-          <ConduitHomePage />
+          <ConduitPagesHome />
         </Route>
       </Router>
       <ConduitLayoutFooter />
