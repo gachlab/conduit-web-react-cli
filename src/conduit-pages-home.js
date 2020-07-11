@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import service from "./conduit-pages-home-service";
 import ConduitTagsPopular from "./conduit-tags-popular";
-import ConduitArticlesList from "./conduit-articles-list";
-import ConduitArticlesListItem from "./conduit-articles-list-item";
 import ConduitArticlesPreview from "./conduit-articles-preview";
 import ConduitArticlesMeta from "./conduit-articles-meta";
 import ConduitButtonsFavorite from "./conduit-buttons-favorite";
 import ConduitArticlesFeed from "./conduit-articles-feed";
 
-const Home = (props) => {
+const Home = () => {
   const [tags, setTags] = useState();
   const [articles, setArticles] = useState();
   const [feeds, setFeeds] = useState();
@@ -57,24 +55,21 @@ const Home = (props) => {
               <div>Loading... </div>
             )}
 
-            <ConduitArticlesList>
-              {articles ? (
-                articles.map((article) => (
-                  <ConduitArticlesListItem key={article.slug}>
-                    <ConduitArticlesPreview article={article}>
-                      <ConduitArticlesMeta article={article}>
-                        <ConduitButtonsFavorite
-                          article={article}
-                          onFavoritedArticle={onFavoritedArticle()}
-                        ></ConduitButtonsFavorite>
-                      </ConduitArticlesMeta>
-                    </ConduitArticlesPreview>
-                  </ConduitArticlesListItem>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )}
-            </ConduitArticlesList>
+            {articles ? (
+              articles.map((article) => (
+                <ConduitArticlesPreview article={article} key={article.slug}>
+                  <ConduitArticlesMeta article={article} key={article.slug}>
+                    <ConduitButtonsFavorite
+                      article={article}
+                      onFavoritedArticle={onFavoritedArticle()}
+                      key={article.slug}
+                    ></ConduitButtonsFavorite>
+                  </ConduitArticlesMeta>
+                </ConduitArticlesPreview>
+              ))
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
           <div className="col-md-3">
             {tags ? (
