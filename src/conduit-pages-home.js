@@ -10,22 +10,51 @@ const Home = () => {
   const [tags, setTags] = useState();
   const [articles, setArticles] = useState();
   const [feeds, setFeeds] = useState();
-  const [selectedFeed, setSelectedFeed] = useState("all");
+  const [selectedFeed, setSelectedFeed] = useState();
+  const [pages, setPages] = useState();
+  const [selectedPage, setSelectedPage] = useState();
 
   useEffect(() => {
-    service.fetchTags().then((tags) => setTags(tags));
-    setFeeds([
-      { id: "personal", name: "Your feed" },
-      { id: "all", name: "Global Feed" },
-    ]);
-    service
-      .fetchArticles({
-        limit: 10,
-        offset: 0,
-        feed: { id: "all", name: "Global Feed" },
-      })
-      .then((articles) => setArticles(articles));
+    service.init().then((state) => setState(state));
   }, []);
+
+  const onTagSelected = (tag) => {
+    service
+      .onTagSelected({ tag, state: getState() })
+      .then((state) => setState(state));
+  };
+
+  const onFeedSelected = (feed) => {
+    service
+      .onFeedSelected({ feed, state: getState() })
+      .then((state) => setState(state));
+  };
+
+  const onFavoritedArticle = (article) => {
+    console.log(article);
+  };
+
+  const getState = () => {
+    return JSON.parse(
+      JSON.stringify({
+        articles: articles,
+        pages: pages,
+        tags: tags,
+        feeds: feeds,
+        selectedFeed: selectedFeed,
+        selectedPage: selectedPage,
+      })
+    );
+  };
+
+  const setState = (input) => {
+    setArticles(input.articles);
+    setPages(input.pages);
+    setTags(input.tags);
+    setFeeds(input.feeds);
+    setSelectedFeed(input.selectedFeed);
+    setSelectedPage(input.selectedPage);
+  };
 
   return (
     <div className="home-page">
@@ -44,12 +73,7 @@ const Home = () => {
               <ConduitArticlesFeed
                 feeds={feeds}
                 selected={selectedFeed}
-                onSelected={onFeedSelected({
-                  setArticles,
-                  setSelectedFeed,
-                  HomePageService: service,
-                  feeds,
-                })}
+                onSelected={onFeedSelected}
               ></ConduitArticlesFeed>
             ) : (
               <div>Loading... </div>
@@ -61,7 +85,7 @@ const Home = () => {
                   <ConduitArticlesMeta article={article} key={article.slug}>
                     <ConduitButtonsFavorite
                       article={article}
-                      onFavoritedArticle={onFavoritedArticle()}
+                      onFavoritedArticle={onFavoritedArticle}
                       key={article.slug}
                     ></ConduitButtonsFavorite>
                   </ConduitArticlesMeta>
@@ -73,15 +97,7 @@ const Home = () => {
           </div>
           <div className="col-md-3">
             {tags ? (
-              <ConduitTagsPopular
-                tags={tags}
-                onSelected={onTagSelected({
-                  setArticles,
-                  setSelectedFeed,
-                  HomePageService: service,
-                  feeds,
-                })}
-              />
+              <ConduitTagsPopular tags={tags} onSelected={onTagSelected} />
             ) : (
               <div>Loading...</div>
             )}
@@ -90,33 +106,6 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-const onTagSelected = (dependencies) => (tag) => {
-  const tagFeed = {
-    id: tag.toLowerCase(),
-    name: "#" + tag,
-  };
-  dependencies.feeds[2] = tagFeed;
-  dependencies.setSelectedFeed(tagFeed.id);
-  dependencies.HomePageService.fetchArticles({
-    limit: 10,
-    offset: 0,
-    feed: tagFeed,
-  }).then((articles) => dependencies.setArticles(articles));
-};
-
-const onFeedSelected = (dependencies) => (selectedFeed) => {
-  dependencies.setSelectedFeed(selectedFeed.id);
-  dependencies.HomePageService.fetchArticles({
-    limit: 10,
-    offset: 0,
-    feed: selectedFeed,
-  }).then((articles) => dependencies.setArticles(articles));
-};
-
-const onFavoritedArticle = (dependencies) => (article) => {
-  console.log(article);
 };
 
 export default Home;
