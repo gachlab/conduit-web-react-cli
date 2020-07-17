@@ -7,27 +7,18 @@ import ConduitButtonsFavorite from "./conduit-buttons-favorite";
 import ConduitArticlesFeed from "./conduit-articles-feed";
 
 const Home = () => {
-  const [tags, setTags] = useState();
-  const [articles, setArticles] = useState();
-  const [feeds, setFeeds] = useState();
-  const [selectedFeed, setSelectedFeed] = useState();
-  const [pages, setPages] = useState();
-  const [selectedPage, setSelectedPage] = useState();
+  const [state, setState] = useState();
 
   useEffect(() => {
-    service.init().then((state) => setState(state));
+    service.init().then(setState);
   }, []);
 
   const onTagSelected = (tag) => {
-    service
-      .onTagSelected({ tag, state: getState() })
-      .then((state) => setState(state));
+    service.onTagSelected({ tag, state: getState() }).then(setState);
   };
 
   const onFeedSelected = (feed) => {
-    service
-      .onFeedSelected({ feed, state: getState() })
-      .then((state) => setState(state));
+    service.onFeedSelected({ feed, state: getState() }).then(setState);
   };
 
   const onFavoritedArticle = (article) => {
@@ -35,25 +26,7 @@ const Home = () => {
   };
 
   const getState = () => {
-    return JSON.parse(
-      JSON.stringify({
-        articles: articles,
-        pages: pages,
-        tags: tags,
-        feeds: feeds,
-        selectedFeed: selectedFeed,
-        selectedPage: selectedPage,
-      })
-    );
-  };
-
-  const setState = (input) => {
-    setArticles(input.articles);
-    setPages(input.pages);
-    setTags(input.tags);
-    setFeeds(input.feeds);
-    setSelectedFeed(input.selectedFeed);
-    setSelectedPage(input.selectedPage);
+    return JSON.parse(JSON.stringify(state));
   };
 
   return (
@@ -69,18 +42,18 @@ const Home = () => {
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
-            {feeds ? (
+            {state && state.feeds ? (
               <ConduitArticlesFeed
-                feeds={feeds}
-                selected={selectedFeed}
+                feeds={state.feeds}
+                selected={state.selectedFeed}
                 onSelected={onFeedSelected}
               ></ConduitArticlesFeed>
             ) : (
               <div>Loading... </div>
             )}
 
-            {articles ? (
-              articles.map((article) => (
+            {state && state.articles ? (
+              state.articles.map((article) => (
                 <ConduitArticlesPreview article={article} key={article.slug}>
                   <ConduitArticlesMeta article={article} key={article.slug}>
                     <ConduitButtonsFavorite
@@ -96,8 +69,11 @@ const Home = () => {
             )}
           </div>
           <div className="col-md-3">
-            {tags ? (
-              <ConduitTagsPopular tags={tags} onSelected={onTagSelected} />
+            {state && state.tags ? (
+              <ConduitTagsPopular
+                tags={state.tags}
+                onSelected={onTagSelected}
+              />
             ) : (
               <div>Loading...</div>
             )}
