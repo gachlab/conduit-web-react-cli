@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import service from "./conduit-pages-home-service";
 import ConduitTagsPopular from "./conduit-tags-popular";
-import ConduitArticlesPreview from "./conduit-articles-preview";
-import ConduitArticlesMeta from "./conduit-articles-meta";
-import ConduitButtonsFavorite from "./conduit-buttons-favorite";
+import ConduitArticlesList from "./conduit-articles-list";
 import ConduitArticlesFeed from "./conduit-articles-feed";
 
 const Home = () => {
@@ -19,10 +17,6 @@ const Home = () => {
 
   const onFeedSelected = (feed) => {
     service.onFeedSelected({ feed, state: getState() }).then(setState);
-  };
-
-  const onFavoritedArticle = (article) => {
-    console.log(article);
   };
 
   const getState = () => {
@@ -53,17 +47,7 @@ const Home = () => {
             )}
 
             {state && state.articles ? (
-              state.articles.map((article) => (
-                <ConduitArticlesPreview article={article} key={article.slug}>
-                  <ConduitArticlesMeta article={article} key={article.slug}>
-                    <ConduitButtonsFavorite
-                      article={article}
-                      onFavoritedArticle={onFavoritedArticle}
-                      key={article.slug}
-                    ></ConduitButtonsFavorite>
-                  </ConduitArticlesMeta>
-                </ConduitArticlesPreview>
-              ))
+              <ConduitArticlesList articles={state.articles} />
             ) : (
               <div>Loading...</div>
             )}
