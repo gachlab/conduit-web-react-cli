@@ -1,7 +1,4 @@
-import React from "react";
-import ConduitArticlesListItem from "./conduit-articles-list-item";
+import React from 'react';
 
-const component = ({ articles }) =>
-  articles.map((article) => <ConduitArticlesListItem article={article} />);
-
-export default component;
+export default (dependencies) => (props) =>
+	props.articles.map((article) => <dependencies.ArticlesListItem key={article.slug} article={article} />);

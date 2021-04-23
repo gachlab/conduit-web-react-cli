@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+    conduit-web-react-cli:
+        image: gachlab/conduit-web:react-cli
+        build:
+            context: ./
+        volumes:
+            - ./:/home/node/app
+            - "/home/node/app/node_modules"
+        environment: 
+          - HOST
+          - PORT
+          - BROWSER
+        ports:
+            - 3000:3000
