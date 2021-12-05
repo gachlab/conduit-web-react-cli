@@ -1,0 +1,16 @@
+version: '3.8'
+networks:
+  default:
+    name: gachlab_default
+services:
+  conduit-web-react:
+    image: gachlab/conduit-web-react:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./
+      dockerfile: Dockerfile.build
+    ports:
+      - 3000:80
+    labels:
+      traefik.http.routers.conduit-web-react.rule: "Host(`conduit-web-react.${DOMAIN}`)"
+      traefik.http.routers.conduit-web-react.tls.certresolver: "le"
+      traefik.http.routers.conduit-web-react.entrypoints: "websecure"      

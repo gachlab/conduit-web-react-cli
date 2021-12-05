@@ -1,0 +1,13 @@
+FROM node:lts-alpine as conduit-react-base
+WORKDIR /home/node/app
+COPY package.json package-lock.json ./
+RUN npm i
+
+FROM conduit-react-base as conduit-react-build
+WORKDIR /home/node/app
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine 
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=conduit-react-build /home/node/app/build /usr/share/nginx/html
