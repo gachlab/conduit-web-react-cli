@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConduitArticlesFeed = ({ feeds, selected, onSelected }) => (
+ export default ({ feeds, selected, onSelected }) => (
   <div className="feed-toggle">
     <ul className="nav nav-pills outline-active">
       {feeds.map((feed) => (
@@ -16,5 +16,3 @@ const ConduitArticlesFeed = ({ feeds, selected, onSelected }) => (
     </ul>
   </div>
 );
-
-export default ConduitArticlesFeed;

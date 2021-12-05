@@ -1,8 +1,8 @@
 import React from "react";
 
-import ConduitArticlesPreview from "./conduit-articles-preview";
-import ConduitArticlesMeta from "./conduit-articles-meta";
-import ConduitButtonsFavorite from "./conduit-buttons-favorite";
+import ConduitArticlesPreview from "../conduit-articles-preview";
+import ConduitArticlesMeta from "../conduit-articles-meta";
+import ConduitButtonsFavorite from "../conduit-buttons-favorite";
 
 const onFavoritedArticle = (article) => {
   console.log(article);

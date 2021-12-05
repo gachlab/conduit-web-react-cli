@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ConduitLayoutHeader from "./conduit-layout-header";
 import ConduitLayoutFooter from "./conduit-layout-footer";
@@ -9,11 +9,14 @@ function App() {
   return (
     <div>
       <ConduitLayoutHeader />
-      <Router>
-        <Route path="/">
-          <ConduitPagesHome />
-        </Route>
-      </Router>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ConduitPagesHome />}>
+            
+          </Route>
+        </Routes>
+      </BrowserRouter>
+
       <ConduitLayoutFooter />
     </div>
   );

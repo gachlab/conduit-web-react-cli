@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import service from "./conduit-pages-home-service";
-import ConduitTagsPopular from "./conduit-tags-popular";
-import ConduitArticlesList from "./conduit-articles-list";
-import ConduitArticlesFeed from "./conduit-articles-feed";
+import service from "./service";
+import ConduitTagsPopular from "../components/conduit-tags-popular";
+import ConduitArticlesList from "../components/conduit-articles-list";
+import ConduitArticlesFeed from "../components/conduit-articles-feed";
 
 const Home = () => {
   const [state, setState] = useState();
