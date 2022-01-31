@@ -1,16 +1,27 @@
-function init() {
-  const selectedPage = 1;
-  const feeds = [
+export default {
+  init,
+  onFeedSelected,
+  onTagSelected,
+  onPageSelected,
+};
+
+const state = {
+  articles: [],
+  tags: [],
+  feeds: [
     { id: "personal", name: "Your feed" },
     { id: "all", name: "Global Feed" },
-  ];
-  const selectedFeed = feeds[1].id;
+  ],
+  selectedPage: 1,
+  selectedFeed: 'all'
+}
 
+function init() {
   return Promise.all([
     fetchArticles({
       limit: 10,
-      page: selectedPage,
-      feed: feeds[1],
+      page: state.selectedPage,
+      feed: state.feeds[1],
     }),
     fetchTags(),
   ])
@@ -18,14 +29,13 @@ function init() {
       articles: articles,
       tags: tags.tags,
     }))
-    .then((state) => ({
-      articles: state.articles.data,
-      pages: state.articles.meta.pages,
-      tags: state.tags,
-      selectedFeed,
-      feeds,
-      selectedPage,
-    }));
+    .then((state) =>
+      Object.assign({}, state, {
+        articles: state.articles.data,
+        pages: state.articles.meta.pages,
+        tags: state.tags,
+      })
+    );
 }
 
 function onTagSelected(input) {
@@ -89,11 +99,9 @@ function fetchArticles(filter) {
   filter = Object.assign(filter, {
     offset: filter.limit * (filter.page - 1),
   });
-  const url = `https://conduit.productionready.io/api/articles${
-    filter ? "?" : ""
-  }${filter.limit ? "limit=" + filter.limit : ""}${
-    "&offset=" + filter.offset || 0
-  }${filter.feed.name.includes("#") ? "&tag=" + filter.feed.id : ""}`;
+  const url = `https://conduit.productionready.io/api/articles${filter ? "?" : ""
+    }${filter.limit ? "limit=" + filter.limit : ""}${"&offset=" + filter.offset || 0
+    }${filter.feed.name.includes("#") ? "&tag=" + filter.feed.id : ""}`;
 
   return fetch(url)
     .then((response) => response.json())
@@ -128,9 +136,3 @@ function addProfilePageLink(article) {
   });
 }
 
-export default {
-  init,
-  onFeedSelected,
-  onTagSelected,
-  onPageSelected,
-};

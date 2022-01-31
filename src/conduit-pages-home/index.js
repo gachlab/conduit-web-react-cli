@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import service from "./service";
 import ConduitTagsPopular from "../components/conduit-tags-popular";
 import ConduitArticlesList from "../components/conduit-articles-list";
 import ConduitArticlesFeed from "../components/conduit-articles-feed";
 
-const Home = () => {
+const Home = ({ service }) => {
   const [state, setState] = useState();
 
   useEffect(() => {
