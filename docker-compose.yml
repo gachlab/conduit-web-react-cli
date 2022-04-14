@@ -1,0 +1,18 @@
+version: '3.8'
+networks:
+  default:
+    name: ${NETWORK}
+services:
+  conduit-web-react:
+    image: gachlab/conduit-web-react:latest
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    command: npm start
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+    labels:
+      traefik.http.routers.conduit-web-react-dev.rule: "Host(`react-dev.conduit.${DOMAIN}`)"
+      traefik.http.routers.conduit-web-react-dev.tls.certresolver: "le"
+      traefik.http.routers.conduit-web-react-dev.entrypoints: "websecure"      

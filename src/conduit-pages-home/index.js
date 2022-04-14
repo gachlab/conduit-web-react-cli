@@ -3,19 +3,19 @@ import ConduitTagsPopular from "../components/conduit-tags-popular";
 import ConduitArticlesList from "../components/conduit-articles-list";
 import ConduitArticlesFeed from "../components/conduit-articles-feed";
 
-const Home = ({ service }) => {
+const Home = ({ init, onTagSelected, onFeedSelected, onPageSelected }) => {
   const [state, setState] = useState();
 
   useEffect(() => {
-    service.init().then(setState);
+    init().then(setState);
   }, []);
 
-  const onTagSelected = (tag) => {
-    service.onTagSelected({ tag, state: getState() }).then(setState);
+  const onTagIsSelected = (tag) => {
+    onTagSelected({ tag, state: getState() }).then(setState);
   };
 
-  const onFeedSelected = (feed) => {
-    service.onFeedSelected({ feed, state: getState() }).then(setState);
+  const onFeedIsSelected = (feed) => {
+    onFeedSelected({ feed, state: getState() }).then(setState);
   };
 
   const getState = () => {
@@ -39,7 +39,7 @@ const Home = ({ service }) => {
               <ConduitArticlesFeed
                 feeds={state.feeds}
                 selected={state.selectedFeed}
-                onSelected={onFeedSelected}
+                onSelected={onFeedIsSelected}
               ></ConduitArticlesFeed>
             ) : (
               <div>Loading... </div>
@@ -55,7 +55,7 @@ const Home = ({ service }) => {
             {state && state.tags ? (
               <ConduitTagsPopular
                 tags={state.tags}
-                onSelected={onTagSelected}
+                onSelected={onTagIsSelected}
               />
             ) : (
               <div>Loading...</div>

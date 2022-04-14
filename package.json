@@ -10,7 +10,7 @@
     "react-scripts": "5.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm i && react-scripts start",
     "build": "react-scripts build",
     "build:docker": "docker compose -f docker-compose.build.yml build",
     "test": "react-scripts test",

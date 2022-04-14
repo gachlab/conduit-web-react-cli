@@ -1,1 +1,6 @@
-node_modules/
+.dockerignore
+.gitignore
+docker-compose*
+Dockerfile*
+README*
+node_modules
