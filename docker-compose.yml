@@ -15,4 +15,5 @@ services:
     labels:
       traefik.http.routers.conduit-web-react-dev.rule: "Host(`react-dev.conduit.${DOMAIN}`)"
       traefik.http.routers.conduit-web-react-dev.tls.certresolver: "le"
-      traefik.http.routers.conduit-web-react-dev.entrypoints: "websecure"      
+      traefik.http.routers.conduit-web-react-dev.entrypoints: "websecure"          
+      traefik.http.routers.conduit-web-react-dev.middlewares: "security-headers"

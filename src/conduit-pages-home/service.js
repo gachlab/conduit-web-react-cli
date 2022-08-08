@@ -1,55 +1,59 @@
 const state = {
-  articles: [],
-  tags: [],
-  pages: [],
-  feeds: [
+  "articles.list.data": [],
+  "articles.list.pages": [],
+  "articles.list.selectedPage": 1,
+  "articles.feeds.data": [
     { id: "personal", name: "Your feed" },
     { id: "all", name: "Global Feed" },
   ],
-  selectedPage: 1,
-  selectedFeed: "all",
+  "articles.feeds.selected": "all",
+  "tags.data": [],
 };
 
 export function init(dependencies) {
   return () =>
-    Promise.resolve(Object.assign({}, state))
-      .then((state) =>
-        Promise.all([
-          dependencies.fetchArticles({
-            limit: 10,
-            page: state.selectedPage,
-            feed: state.feeds[1],
-          }),
-          dependencies.fetchTags(),
-        ]).then(([articles, tags]) => ({
+    Promise.resolve(Object.assign({}, state)).then((state) =>
+      Promise.all([
+        dependencies.fetchArticles({
+          limit: 10,
+          page: state["articles.list.selectedPage"],
+          feed: state["articles.feeds.data"].find(
+            (feed) => feed.id === state["articles.feeds.selected"]
+          ),
+        }),
+        dependencies.fetchTags(),
+      ])
+        .then(([articles, tags]) => ({
           articles: articles,
           tags: tags.tags,
         }))
-      )
-      .then((state) =>
-        Object.assign({}, state, {
-          articles: state.articles.data,
-          pages: state.articles.meta.pages,
-          tags: state.tags,
-        })
-      );
+        .then((response) =>
+          Object.assign({}, state, {
+            "articles.list.data": response.articles.data,
+            "articles.list.pages": response.articles.meta.pages,
+            "tags.data": response.tags,
+          })
+        )
+    );
 }
 
-export function onTagSelected(input) {
-  return selectFeed({
-    feed: {
-      id: input.tag.toLowerCase(),
-      name: "#" + input.tag,
-    },
-    state: input.state,
-  });
+export function onTagSelected(dependencies) {
+  return (input) =>
+    selectFeed(dependencies)({
+      feed: {
+        id: input.tag.toLowerCase(),
+        name: "#" + input.tag,
+      },
+      state: input.state,
+    });
 }
 
-export function onFeedSelected(input) {
-  return selectFeed({
-    feed: input.feed,
-    state: input.state,
-  });
+export function onFeedSelected(dependencies) {
+  return (input) =>
+    selectFeed(dependencies)({
+      feed: input.feed,
+      state: input.state,
+    });
 }
 
 export function onPageSelected(input) {
@@ -68,14 +72,14 @@ function selectFeed(dependencies) {
         page: 1,
         feed: input.feed,
       })
-      .then((articles) => ({
-        articles: articles.data,
-        pages: articles.meta.pages,
-        tags: input.state.tags,
-        feeds: input.state.feeds,
-        selectedFeed: input.feed.id,
-        selectedPage: 1,
-      }));
+      .then((articles) =>
+        Object.assign({}, input.state, {
+          articles: articles.data,
+          pages: articles.meta.pages,
+          selectedFeed: input.feed.id,
+          selectedPage: 1,
+        })
+      );
   };
 }
 
